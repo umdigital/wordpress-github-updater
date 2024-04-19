@@ -1,0 +1,25 @@
+{
+    "name": "umdigital/umich-github-updater",
+    "description": "Provides simple method to distribute releases using github rather than wordpress plugin repo.",
+    "homepage": "https://github.com/umdigital/umich-github-updater",
+    "license": [ "MIT" ],
+    "type": "library",
+    "keywords": [
+    ],
+    "authors": [
+        {
+            "name": "Patrick Springstubbe",
+            "homepage": "https://github.com/nobleclem"
+        }
+    ],
+    "support": {
+        "docs": "https://github.com/umdigital/umich-github-updater",
+        "issues": "https://github.com/umdigital/umich-github-updater/issues",
+        "source": "https://github.com/umdigital/umich-github-updater"
+    },
+    "require": {
+        "php": "^7.4"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
