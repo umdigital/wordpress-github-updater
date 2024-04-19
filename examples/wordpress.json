@@ -1,0 +1,7 @@
+{
+    "requires"    : "5.8.0",
+    "tested"      : "6.5.2",
+    "requires_php": "7.4.0",
+    "banners:low" : "http://mydomain/mybanner-750x250.jpg",
+    "banners:high": "http://mydomain/mybanner-1500x500.jpg",
+}
