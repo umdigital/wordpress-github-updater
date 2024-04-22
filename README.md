@@ -4,7 +4,7 @@ Provides the ability to update a wordpress plugin using Github instead of wordpr
 
 ## Usage
 ```
-include 'vendor/umdigital/umich-github-updater.php';
+include 'vendor/umdigital/github-updater.php';
 
 // Initialize Github Updater
 new \Umich\GithubUpdater\Init([
@@ -16,7 +16,7 @@ new \Umich\GithubUpdater\Init([
 ### Initialization Options
 | Option      | Required | Default        | Description                           |
 | ----------- | ---------| -------------- | ------------------------------------- |
-| repo        | Yes      |                | Path to your github repo e.g. umdigital/umich-github-updater |
+| repo        | Yes      |                | Path to your github repo e.g. umdigital/wordpress-github-updater |
 | slug        | Yes      |                | Plugin slug e.g. my-plugin/my-plugin.php, can use `plugin_basename( __FILE__ )`|
 | config      | No       | wordpress.json | See below for options                 |
 | changelog   | No       | CHANGELOG      | Provide Changelog information in the plugin info admin panel |

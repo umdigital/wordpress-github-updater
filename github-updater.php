@@ -4,7 +4,7 @@
  * Name: U-M: Wordpress Github Updater Library
  * Description: Provides simple method to distribute releases using github rather than wordpress plugin repo.
  * Version: 1.0.0
- * Project URI: https://github.com/umdigital/umich-github-updater
+ * Project URI: https://github.com/umdigital/wordpress-github-updater
  * Author: U-M: OVPC Digital
  * Author URI: https://vpcomm.umich.edu
  */

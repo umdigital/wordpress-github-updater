@@ -1,7 +1,7 @@
 {
-    "name": "umdigital/umich-github-updater",
+    "name": "umich/wordpress-github-updater",
     "description": "Provides simple method to distribute releases using github rather than wordpress plugin repo.",
-    "homepage": "https://github.com/umdigital/umich-github-updater",
+    "homepage": "https://github.com/umdigital/wordpress-github-updater",
     "license": [ "MIT" ],
     "type": "library",
     "keywords": [
@@ -13,9 +13,9 @@
         }
     ],
     "support": {
-        "docs": "https://github.com/umdigital/umich-github-updater",
-        "issues": "https://github.com/umdigital/umich-github-updater/issues",
-        "source": "https://github.com/umdigital/umich-github-updater"
+        "docs": "https://github.com/umdigital/wordpress-github-updater",
+        "issues": "https://github.com/umdigital/wordpress-github-updater/issues",
+        "source": "https://github.com/umdigital/wordpress-github-updater"
     },
     "require": {
         "php": ">=7.4"
