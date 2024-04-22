@@ -4,7 +4,7 @@ Provides the ability to update a wordpress plugin using Github instead of wordpr
 
 ## Usage
 ```
-include 'vendor/umdigital/github-updater.php';
+include 'vendor/umich/wordpress-github-updater/github-updater.php';
 
 // Initialize Github Updater
 new \Umich\GithubUpdater\Init([
