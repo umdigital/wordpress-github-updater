@@ -1,0 +1,41 @@
+name: Upload Release Asset
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "*.*.*"
+
+jobs:
+  build:
+    name: Upload Release Asset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@master
+
+      - name: Get Tag
+        id: tag
+        run: echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "latest"
+      - uses: "ramsey/composer-install@v3"
+
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+
+      - name: Build Project
+        run: |
+          git archive -o /tmp/${{ github.event.repository.name }}-${{ steps.tag.outputs.tag }}.zip --prefix=${{ github.event.repository.name }}/ ${{ steps.tag.outputs.tag }}
+          mkdir /tmp/${{ github.event.repository.name }}
+          cp -R vendor /tmp/${{ github.event.repository.name }}/
+          cd /tmp
+          zip -r ${{ github.event.repository.name }}-${{ steps.tag.outputs.tag }}.zip ${{ github.event.repository.name }}/vendor
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: /tmp/${{ github.event.repository.name }}-${{ steps.tag.outputs.tag }}.zip
