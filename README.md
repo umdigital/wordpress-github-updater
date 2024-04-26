@@ -10,7 +10,13 @@ Provides the ability to update a wordpress plugin using Github instead of wordpr
 composer require umdigital/wordpress-github-updater
 ```
 
-#### Initialize the library in your plugin
+#### Update Plugin Header
+Add the following to your plugins header
+```
+Update URI: https://github.com/GITHUB_ACCOUNT/GITHUB_REPO
+```
+
+#### Initialize the library
 ```
 include 'vendor/umdigital/wordpress-github-updater/github-updater.php';
 
