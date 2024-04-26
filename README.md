@@ -11,7 +11,7 @@ composer require umdigital/wordpress-github-updater
 ```
 
 #### Update Plugin Header
-Add the following to your plugins header
+Add the following to your [plugins header](https://developer.wordpress.org/plugins/plugin-basics/header-requirements/)
 ```
 Update URI: https://github.com/GITHUB_ACCOUNT/GITHUB_REPO
 ```
