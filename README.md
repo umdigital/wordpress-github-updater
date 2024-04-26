@@ -1,4 +1,6 @@
 # U-M Wordpress Github Updater
+[![GitHub release](https://img.shields.io/github/release/umdigital/wordpress-github-updater.svg)](https://github.com/umdigital/wordpress-github-updater/releases/latest)
+[![GitHub issues](https://img.shields.io/github/issues/umdigital/wordpress-github-updater.svg)](https://github.com/umdigital/wordpress-github-updater/issues)
 
 Provides the ability to update a wordpress plugin using Github instead of wordpress.
 
