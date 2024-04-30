@@ -3,7 +3,7 @@
 /**
  * Name: U-M: Wordpress Github Updater Library
  * Description: Provides simple method to distribute releases using github rather than wordpress plugin repo.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Project URI: https://github.com/umdigital/wordpress-github-updater
  * Author: U-M: OVPC Digital
  * Author URI: https://vpcomm.umich.edu
@@ -33,11 +33,11 @@ namespace Umich\GithubUpdater {
 }
 
 
-namespace Umich\GithubUpdater\v1d0d0 {
-    if( !class_exists( '\Umich\GithubUpdater\v1d0d0\Actions' ) ) {
+namespace Umich\GithubUpdater\v1d0d1 {
+    if( !class_exists( '\Umich\GithubUpdater\v1d0d1\Actions' ) ) {
         class Actions
         {
-            CONST VERSION = '1.0.0';
+            CONST VERSION = '1.0.1';
 
             private $_githubBase = [
                 'main' => 'https://github.com/',
@@ -118,20 +118,14 @@ namespace Umich\GithubUpdater\v1d0d0 {
                 // Plugin Details
                 add_filter( 'plugins_api', function( $return, $action, $args ){
                     if( !isset( $args->slug ) || ($args->slug != $this->_options['slug']) ) {
-                        return false;
+                        return $return;
                     }
 
                     $release    = $this->_callAPI( 'releases/latest', 'gh_release_latest' );
-                    $repoInfo   = $this->_callAPI( '', 'gh_info' );
-                    $pluginData = $this->_getPluginData();
+                    $pluginData = get_plugin_data( WP_PLUGIN_DIR .'/'. $this->_options['slug'] );
 
-                    if( $release && $repoInfo && $pluginData ) {
-                        $wpConfig = $this->_callAPI( "contents/{$this->_options['config']}?ref={$release->tag_name}");
-                        if( $wpConfig && isset( $wpConfig->content ) ) {
-                            $wpConfig = json_decode( base64_decode( $wpConfig->content ) );
-                        }
-
-                        if( $wpConfig ) {
+                    if( $release && $pluginData ) {
+                        if( ($wpConfig = $this->_getRaw( $this->_options['config'], $release->tag_name )) !== false ) {
                             foreach( [ 'description', 'changelog' ] as $key ) {
                                 if( isset( $wpConfig->{$key} ) ) {
                                     $this->_options[ $key ] = $wpConfig->{$key};
@@ -151,11 +145,13 @@ namespace Umich\GithubUpdater\v1d0d0 {
                             'homepage'       => $pluginData['PluginURI'],
                             'sections'       => [ // as html
                                 'description' => $this->_getMarkdown(
-                                    $this->_options['description'] .'?ref='. $release->tag_name,
-                                    $repoInfo->description
+                                    $this->_options['description'],
+                                    $release->tag_name,
+                                    $pluginData['Description'] ?: $pluginData['Name']
                                 ),
                                 'changelog'   => $this->_getMarkdown(
-                                    $this->_options['changelog'] .'?ref='. $release->tag_name,
+                                    $this->_options['changelog'],
+                                    $release->tag_name,
                                     $release->body
                                 ),
                             ],
@@ -194,7 +190,7 @@ namespace Umich\GithubUpdater\v1d0d0 {
                     }
 
                     return $return;
-                }, 10, 3 );
+                }, 20, 3 );
 
                 // force directory name to stay the same
                 add_filter( 'upgrader_post_install', function( $true, $extra, $result ){
@@ -214,8 +210,6 @@ namespace Umich\GithubUpdater\v1d0d0 {
 
             private function _callAPI( $endpoint, $key = null, $method = 'GET', $data = null )
             {
-                $key = false;
-
                 if( $key && isset( $this->_data[ $key ] ) ) {
                     return $this->_data[ $key ];
                 }
@@ -237,7 +231,7 @@ namespace Umich\GithubUpdater\v1d0d0 {
                 $data = false;
 
                 if( $key ) {
-                    $data = get_site_transient( $this->_getTransient( $key ) );
+                    $data = get_site_transient( $this->_getTransientKey( $key ) );
                 }
 
                 if( !$data ) {
@@ -254,7 +248,7 @@ namespace Umich\GithubUpdater\v1d0d0 {
 
                     if( $key ) {
                         set_site_transient(
-                            $this->_getTransient( $key ),
+                            $this->_getTransientKey( $key ),
                             $data,
                             60 * 60 * 6 // 6 hours
                         );
@@ -266,22 +260,29 @@ namespace Umich\GithubUpdater\v1d0d0 {
                 return $data;
             }
 
-            private function _getTransient( $key )
+            private function _getRaw( $file, $version = null )
+            {
+                $asset = trim( "{$version}/{$file}", '/' );
+
+                $url = "{$this->_githubBase['raw']}{$this->_options['repo']}/{$asset}";
+
+                $res = wp_remote_get( $url );
+
+                if( is_wp_error( $res ) || (@$res['response']['code'] != 200) ) {
+                    return false;
+                }
+
+                return $res['body'];
+            }
+
+            private function _getTransientKey( $key )
             {
                 return substr( $this->_options['repo'], 0, 100 ) .'-'. $key;
             }
 
-            private function _getPluginData()
+            private function _getMarkdown( $file, $version = null, $default = '' )
             {
-                // include_once ABSPATH.'/wp-admin/includes/plugin.php';
-                return get_plugin_data( WP_PLUGIN_DIR .'/'. $this->_options['slug'] );
-            }
-
-            private function _getMarkdown( $file, $default = '' )
-            {
-                if( ($res = $this->_callAPI( 'contents/'. $file )) && isset( $res->content ) ) {
-                    $content = base64_decode( $res->content );
-
+                if( ($content = $this->_getRaw( $file, $version )) !== false ) {
                     $mRes = wp_remote_post(
                         'https://api.github.com/markdown', [
                             'body'    => json_encode([ 'text' => $content ]),

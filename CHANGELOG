@@ -1,3 +1,10 @@
+1.0.1 (2024-04-30)
+==================
+Fix default plugins_api return value
+Increase priority level of filter
+Reduce GitHub API Calls
+Fix transient key bug
+
 1.0.0 (2024-04-26)
 ==================
 - Initial Release
