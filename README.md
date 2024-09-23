@@ -32,13 +32,14 @@ For best support it is recommended to add a release workflow that will automatic
 
 ## Configuration
 ### Initialization Options
-| Option      | Required | Default        | Description                           |
-| ----------- | ---------| -------------- | ------------------------------------- |
-| repo        | Yes      |                | Path to your github repo e.g. umdigital/wordpress-github-updater |
-| slug        | Yes      |                | Plugin slug e.g. my-plugin/my-plugin.php, can use `plugin_basename( __FILE__ )`|
-| config      | No       | wordpress.json | See below for options                 |
-| changelog   | No       | CHANGELOG      | Provide Changelog information in the plugin info admin panel |
-| description | No       | README.md      | Provide plugin information in the plugin info admin panel |
+| Option        | Required | Default         | Description                           |
+| ------------- | ---------| --------------- | ------------------------------------- |
+| repo          | Yes      |                 | Path to your github repo e.g. umdigital/wordpress-github-updater |
+| slug          | Yes      |                 | Plugin slug e.g. my-plugin/my-plugin.php, can use `plugin_basename( __FILE__ )`|
+| config        | No       | wordpress.json  | See below for options                 |
+| changelog     | No       | CHANGELOG       | Provide Changelog information in the plugin info admin panel |
+| description   | No       | README.md       | Provide plugin information in the plugin info admin panel |
+| cache_timeout | No       | 21600 (6 hours) | How long to cache github plugin data |
 
 
 ### Config File (wordpress.json) Options

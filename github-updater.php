@@ -3,7 +3,7 @@
 /**
  * Name: U-M: Wordpress Github Updater Library
  * Description: Provides simple method to distribute releases using github rather than wordpress plugin repo.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Project URI: https://github.com/umdigital/wordpress-github-updater
  * Author: U-M: OVPC Digital
  * Author URI: https://vpcomm.umich.edu
@@ -33,11 +33,11 @@ namespace Umich\GithubUpdater {
 }
 
 
-namespace Umich\GithubUpdater\v1d0d1 {
-    if( !class_exists( '\Umich\GithubUpdater\v1d0d1\Actions' ) ) {
+namespace Umich\GithubUpdater\v1d0d2 {
+    if( !class_exists( '\Umich\GithubUpdater\v1d0d2\Actions' ) ) {
         class Actions
         {
-            CONST VERSION = '1.0.1';
+            CONST VERSION = '1.0.2';
 
             private $_githubBase = [
                 'main' => 'https://github.com/',
@@ -51,11 +51,12 @@ namespace Umich\GithubUpdater\v1d0d1 {
             ];
 
             private $_options = [
-                'repo'        => '',
-                'slug'        => '',
-                'config'      => 'wordpress.json',
-                'changelog'   => 'CHANGELOG',
-                'description' => 'README.md',
+                'repo'          => '',
+                'slug'          => '',
+                'config'        => 'wordpress.json',
+                'changelog'     => 'CHANGELOG',
+                'description'   => 'README.md',
+                'cache_timeout' => 60 * 60 * 6, // 6 hours
             ];
 
             private $_data = [];
@@ -234,7 +235,7 @@ namespace Umich\GithubUpdater\v1d0d1 {
                     $data = get_site_transient( $this->_getTransientKey( $key ) );
                 }
 
-                if( !$data ) {
+                if( !$data || isset( $_GET['force-check'] ) ) {
                     $res = wp_remote_request(
                         rtrim( "{$this->_githubBase['api']}{$this->_options['repo']}/{$endpoint}", '/' ),
                         $params
@@ -250,7 +251,7 @@ namespace Umich\GithubUpdater\v1d0d1 {
                         set_site_transient(
                             $this->_getTransientKey( $key ),
                             $data,
-                            60 * 60 * 6 // 6 hours
+                            $this->_options['cache_timeout']
                         );
 
                         $this->_data[ $key ] = $data;

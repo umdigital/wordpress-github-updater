@@ -1,3 +1,8 @@
+1.0.2 (2024-09-23)
+==================
+Allow the "Check again." force-check to bypass cache.
+Allow plugin to override transient cache timeout
+
 1.0.1 (2024-04-30)
 ==================
 Fix default plugins_api return value
