@@ -22,6 +22,6 @@ jobs:
 
       - name: Create Release
         id: create_release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: /tmp/${{ github.event.repository.name }}-${{ steps.tag.outputs.tag }}.zip
